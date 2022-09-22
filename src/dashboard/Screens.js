@@ -26,6 +26,53 @@ export default ({ screenName, handleRemove, id, show }) => {
           let data = ev.dataTransfer.getData('text/html');
           let child = new DOMParser();
           let nod = child.parseFromString(data, 'text/html').body.firstChild;
+          nod.addEventListener('click', (e) => {
+            handleToggle(e);
+          });
+          if (nod.getAttribute('data-component') == 'TextInput') {
+            nod = document.createElement('input');
+            nod.setAttribute('data-component', 'TextInput');
+            nod.style.margin = '10px';
+            nod.style.padding = '10px';
+          }
+          if (nod.getAttribute('data-component') == 'TextArea') {
+            nod = document.createElement('textarea');
+            nod.setAttribute('data-component', 'TextArea');
+            nod.style.margin = '10px';
+            nod.style.padding = '10px';
+          }
+          if (nod.getAttribute('data-component') == 'FilePicker') {
+            nod = document.createElement('input');
+            nod.setAttribute('type', 'file');
+            nod.style.margin = '10px';
+            nod.style.padding = '10px';
+          }
+          if (nod.getAttribute('data-component') == 'PasswordInput') {
+            nod = document.createElement('input');
+            nod.setAttribute('data-component', 'PasswordInput');
+            nod.setAttribute('type', 'password');
+            nod.style.margin = '10px';
+            nod.style.padding = '10px';
+          }
+          // PasswordInput;
+          // let button = document.createElement('button');
+          // button.textContent = 'Add Styles';
+
+          //nod.appendChild(button);
+          nod.addEventListener('dragstart', (ev) => {
+            //console.log('drag started');
+            // console.log(ev.target);
+            ev.dataTransfer.dropEffect = 'move';
+            ev.dataTransfer.setData('text/html', ev.target.outerHTML);
+          });
+
+          nod.addEventListener('dragend', () => {
+            //console.log('drag ended');
+          });
+          ev.target.appendChild(nod);
+        }
+        if (ev.target.getAttribute('data-component') == 'TextInput') {
+          let nod = document.createElement('input');
           // let button = document.createElement('button');
           // button.textContent = 'Add Styles';
           nod.addEventListener('click', (e) => {
